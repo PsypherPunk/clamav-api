@@ -1,8 +1,8 @@
 swagger: "2.0"
 info:
-  description: "Implementation of a RESTful interface to ClamAV."
+  description: "Implementation of a HTTP API over ClamAV."
   version: "0.0.0"
-  title: "ClamAV REST"
+  title: "ClamAV API"
   contact:
     email: "psypherpunk@gmail.com"
   license:

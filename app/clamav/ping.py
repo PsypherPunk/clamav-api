@@ -3,8 +3,9 @@ import socket
 
 def search():
     """
-    Check the server's state using clamd's ``PING`` command. It should
-    reply with "PONG".
+    Check the server's state using clamd's ``PING`` command.
+
+    It should reply with ``PONG``.
 
     :return: JSON-structured response from clamd
     """

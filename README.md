@@ -1,6 +1,6 @@
-# `clamav-rest`
+# `clamav-api`
 
-RESTful interface to a `clamd` instance.
+HTTP API on a `clamd` instance.
 
 ## `Dockerfile`
 
