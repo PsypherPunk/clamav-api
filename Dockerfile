@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 RUN apt-get update && \
     apt-get install -y clamav clamav-daemon python3 python3-pip && \
@@ -11,14 +11,20 @@ COPY ./entrypoint.sh /entrypoint.sh
 
 EXPOSE 8000
 
-COPY --chown=clamav:clamav ./app /app
+COPY --chown=clamav:clamav ./clamav /clamav/clamav/
+COPY --chown=clamav:clamav ./main.py /clamav/
+COPY --chown=clamav:clamav ./requirements/base.txt /tmp/requirements.txt
 
 USER clamav
 
-WORKDIR /app
+WORKDIR /clamav
 
-RUN python3 -m pip install --user --no-warn-script-location -r /app/requirements/production.txt
+RUN python3 -m pip install \
+    --user \
+    --no-warn-script-location \
+    --requirement /tmp/requirements.txt && \
+    rm /tmp/requirements.txt
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["gunicorn", "app:app", "-b", "0.0.0.0:8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
