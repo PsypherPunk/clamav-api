@@ -12,6 +12,6 @@ app = FastAPI(
     redoc_url="/redoc",
 )
 
-app.include_router(instream.router)
-app.include_router(ping.router)
-app.include_router(version.router)
+app.include_router(instream.router, prefix="/v1")
+app.include_router(ping.router, prefix="/v1")
+app.include_router(version.router, prefix="/v1")
