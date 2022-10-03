@@ -1,5 +1,4 @@
-import socket
-
+import anyio
 from fastapi import APIRouter
 
 from clamav.models import Output
@@ -20,9 +19,8 @@ async def version():
 
     :return: JSON-structured response from clamd
     """
-    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
-        s.connect("/var/run/clamav/clamd.ctl")
-        s.send(b"nVERSION\n")
-        output = s.recv(4096)
+    async with await anyio.connect_unix("/var/run/clamav/clamd.ctl") as stream:
+        await stream.send(b"VERSION\n")
+        output = await stream.receive(4096)
 
     return Output(output=output.decode("utf-8").strip())
