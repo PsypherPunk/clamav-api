@@ -1,6 +1,6 @@
-import socket
 import struct
 
+import anyio
 from fastapi import APIRouter, Body
 
 from clamav.models import Output
@@ -24,7 +24,7 @@ with INSTREAM size limit exceeded and close the connection.""",
     summary="Scan a stream of data.",
     response_model=Output,
 )
-def post(body: bytes = Body(...)):
+async def instream(body: bytes = Body(...)):
     """
     Scans a stream of data using clamd's ``INSTREAM`` command.
 
@@ -39,16 +39,14 @@ def post(body: bytes = Body(...)):
     :param body: binary data to be scanned
     :return: JSON-structured response from clamd
     """
-    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
-        s.connect("/var/run/clamav/clamd.ctl")
-
-        s.send(b"zINSTREAM\0")
+    async with await anyio.connect_unix("/var/run/clamav/clamd.ctl") as stream:
+        await stream.send(b"zINSTREAM\0")
 
         size = struct.pack(b"!L", len(body))
-        s.send(size + body)
+        await stream.send(size + body)
 
-        s.send(struct.pack(b"!L", 0))
+        await stream.send(struct.pack(b"!L", 0))
 
-        output = s.recv(4096)
+        output = await stream.receive(4096)
 
     return Output(output=output.decode("utf-8").strip())
