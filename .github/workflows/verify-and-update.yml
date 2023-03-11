@@ -1,4 +1,4 @@
-name: Bump version
+name: verify-and-update
 
 on:
   push:
@@ -6,10 +6,26 @@ on:
       - '**'
 
 jobs:
+
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/
+          key: ${{ hashFiles('requirements/test.txt') }}
+      - run: python3 -m pip install --requirement requirements/test.txt
+      - run: pre-commit run --all-files
+
   bump_version:
-    if: "!startsWith(github.event.head_commit.message, 'bump:')"
     runs-on: ubuntu-latest
     name: "Bump version with Commitizen"
+    needs: [pre-commit]
+
     steps:
 
       - name: Check out
@@ -20,7 +36,7 @@ jobs:
       
       - name: Install Commitizen
         run: |
-          python3 -m pip install commitizen==2.35.0
+          python3 -m pip install commitizen==2.42.1
       
       - name: Validate commits
         if: github.ref != 'refs/heads/main'
@@ -38,7 +54,7 @@ jobs:
 
           cz --name cz_customize bump --check-consistency --yes ${prerelease} ${devrelease}
 
-          echo "::set-output name=version::${REV}"
+          echo "version=$(cz version --project)" >> ${GITHUB_OUTPUT}
       
       - name: Push commit
         run: |
