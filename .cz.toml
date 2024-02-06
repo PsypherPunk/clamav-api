@@ -3,3 +3,5 @@ version = "1.0.1"
 bump_message = "bump: version $current_version → $new_version [skip ci]"
 
 [tool.commitizen.customize]
+bump_pattern = '^(BREAKING CHANGE|build|chore|docs|feat|fix|refactor|test)(\(.+\))?(!)?'
+bump_map = { "!" = "MAJOR", build = "PATCH", chore = "PATCH", docs = "PATCH", feat = "MINOR", fix = "PATCH", refactor = "PATCH", test = "PATCH" }
