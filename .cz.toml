@@ -1,5 +1,5 @@
 [tool.commitizen]
-version = "1.0.10rc0.dev54"
+version = "1.0.10"
 bump_message = "bump: version $current_version → $new_version [skip ci]"
 
 [tool.commitizen.customize]
