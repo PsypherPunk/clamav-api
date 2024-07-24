@@ -1,16 +1,16 @@
 repos:
 -   repo: https://github.com/psf/black
-    rev: 24.1.1
+    rev: 24.4.2
     hooks:
     - id: black
       language_version: python3.10
 -   repo: https://github.com/PyCQA/bandit
-    rev: 1.7.7
+    rev: 1.7.9
     hooks:
     - id: bandit
       args: [--skip=B303]
 -   repo: https://github.com/igorshubovych/markdownlint-cli                     
-    rev: v0.39.0                                                                
+    rev: v0.41.0                                                                
     hooks:                                                                      
     - id: markdownlint                                                          
 -   repo: https://github.com/PyCQA/isort                                        
