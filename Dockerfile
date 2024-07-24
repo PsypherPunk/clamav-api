@@ -12,7 +12,6 @@ COPY ./entrypoint.sh /entrypoint.sh
 EXPOSE 8000
 
 COPY --chown=clamav:clamav ./clamav /clamav/clamav/
-COPY --chown=clamav:clamav ./main.py /clamav/
 COPY --chown=clamav:clamav ./requirements/base.txt /tmp/requirements.txt
 
 USER clamav
@@ -27,4 +26,4 @@ RUN python3 -m pip install \
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "clamav:app", "--host", "0.0.0.0", "--port", "8000"]
