@@ -10,16 +10,19 @@ jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+
+      - name: Install poetry
+        run: pipx install poetry
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
-      - uses: actions/cache@v3
-        with:
-          path: ~/.cache/
-          key: ${{ hashFiles('requirements/test.txt') }}
-      - run: python3 -m pip install --requirement requirements/test.txt
-      - run: pre-commit run --all-files
+          python-version: "3.12"
+          cache: poetry
+
+      - run: poetry install
+      - run: poetry run pre-commit run --all-files
 
   bump_version:
     runs-on: ubuntu-latest
@@ -29,19 +32,22 @@ jobs:
     steps:
 
       - name: Check out
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: "${{ secrets.GH_PAT }}"
       
+      - name: Install poetry
+        run: pipx install poetry
+
       - name: Install Commitizen
         run: |
-          python3 -m pip install commitizen==2.42.1
+          poetry install --only dev
       
       - name: Validate commits
         if: github.ref != 'refs/heads/main'
         run: |
-          cz check --rev-range origin/main..
+          poetry run cz check --rev-range origin/main..
 
           echo "prerelease=--prerelease=rc" >>"${GITHUB_ENV}"
           echo "devrelease=--devrelease=${GITHUB_RUN_NUMBER}" >>"${GITHUB_ENV}"
@@ -52,7 +58,7 @@ jobs:
           git config --local user.name 'github-actions[bot]'
           git config --local user.email 'github-actions[bot]@users.noreply.github.com'
 
-          cz --name cz_customize bump --check-consistency --yes ${prerelease} ${devrelease}
+          poetry run cz --name cz_customize bump --check-consistency --yes ${prerelease} ${devrelease}
 
           echo "version=$(cz version --project)" >> ${GITHUB_OUTPUT}
       
