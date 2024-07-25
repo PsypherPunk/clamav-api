@@ -49,4 +49,4 @@ async def instream(body: bytes = Body(...)):
 
         output = await stream.receive(4096)
 
-    return Output(output=output.decode("utf-8").strip())
+    return Output(output=output.decode("utf-8").strip().rstrip("\0"))

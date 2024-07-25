@@ -36,7 +36,7 @@ the API:
 
 ## OpenAPI
 
-The OpenAPI definition will be available at <http://0.0.0.0:8000/doc>.
+The OpenAPI definition will be available at <http://0.0.0.0:8000/docs>.
 
 This should be largely functional, though the `/instream` endpoint
 expects binary data and may not work with the web interface. However,
@@ -56,6 +56,6 @@ You should then receive a positive response:
 
 ```bash
 {
-  "output": "stream: Win.Test.EICAR_HDB-1 FOUND\u0000"
+  "output": "stream: Win.Test.EICAR_HDB-1 FOUND"
 }
 ```
