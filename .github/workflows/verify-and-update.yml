@@ -21,7 +21,7 @@ jobs:
           python-version: "3.12"
           cache: poetry
 
-      - run: poetry install
+      - run: poetry install --no-root
       - run: poetry run pre-commit run --all-files
 
   bump_version:
@@ -42,7 +42,7 @@ jobs:
 
       - name: Install Commitizen
         run: |
-          poetry install --only dev
+          poetry install --only dev --no-root
       
       - name: Validate commits
         if: github.ref != 'refs/heads/main'
