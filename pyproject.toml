@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "clamav-api"
-version = "1.1.6"
+version = "1.1.7rc0.dev90"
 description = "HTTP API on a clamd instance."
 authors = ["PsypherPunk <psypherpunk@gmail.com>"]
 license = "MPL-2.0"
@@ -18,7 +18,7 @@ commitizen = "^3.28.0"
 black = "^24.4.2"
 
 [tool.commitizen]
-version = "1.1.6"
+version = "1.1.7rc0.dev90"
 bump_message = "bump: version $current_version → $new_version [skip ci]"
 version_files = [
     "pwny/__init__.py:^__version__",
