@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "clamav-api"
-version = "1.1.9rc1.dev98"
+version = "1.1.9rc2.dev100"
 description = "HTTP API on a clamd instance."
 authors = ["PsypherPunk <psypherpunk@gmail.com>"]
 license = "MPL-2.0"
@@ -15,10 +15,10 @@ uvicorn = {extras = ["standard"], version = "^0.30.3"}
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.7.1"
 commitizen = "^3.28.0"
-black = "^24.4.2"
+black = "^26.3.1"
 
 [tool.commitizen]
-version = "1.1.9rc1.dev98"
+version = "1.1.9rc2.dev100"
 bump_message = "bump: version $current_version → $new_version [skip ci]"
 version_files = [
     "pwny/__init__.py:^__version__",
